@@ -12,7 +12,7 @@ export class Product {
     @Column('float',{default:0})
     price:number;
 
-    @Column({type:'text', nullable:true})
+    @Column('text',{nullable:true})
     description:string;
 
     @Column('text',{unique:true})
@@ -27,12 +27,14 @@ export class Product {
     @Column('text')
     gender:string;
 
-    // TODO: tags
+    @Column('text',{array:true, default:[] })
+    tags:string[]
+
     // TODO: images
 
 
     @BeforeInsert()
-    checkSlotInsert(){
+    checkSlugInsert(){
         if(!this.slug){
             this.slug = this.title
         }
@@ -41,5 +43,10 @@ export class Product {
                              .replaceAll("'","")
     }
 
-    // @BeforeUpdate()
+    @BeforeUpdate()
+    checkSlugUpdate(){
+        this.slug = this.slug.toLowerCase()
+                             .replaceAll(" ","_")
+                             .replaceAll("'","")
+    }
 }
