@@ -32,7 +32,7 @@ export class AuthService {
       await this.userRepository.save(user);
       delete user.password;
 
-      return {...user,token:this.getJwtToken({email: user.email})};
+      return {...user,token:this.getJwtToken({id: user.id})};
 
 
     } catch (error) {
@@ -45,7 +45,7 @@ export class AuthService {
     const user = await this.userRepository.findOne(
       {
         where:{email},
-        select:{email:true,password:true}
+        select:{id:true,password:true}
 
       }
     );
@@ -58,7 +58,7 @@ export class AuthService {
     }
 
     delete user.password;
-    return {...user,token:this.getJwtToken({email: user.email})};
+    return {...user,token:this.getJwtToken({id: user.id})};
   }
 
 
