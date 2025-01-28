@@ -45,7 +45,7 @@ export class AuthService {
     const user = await this.userRepository.findOne(
       {
         where:{email},
-        select:{id:true,password:true}
+        select:{id:true,password:true,isActive:true}
 
       }
     );
@@ -56,8 +56,12 @@ export class AuthService {
     if(!bcrypt.compareSync(password,user.password)){
       throw new UnauthorizedException('Not valid credentials')
     }
+    if(!user.isActive){
+      throw new UnauthorizedException('User is not active, talk with an admin')
+    }
 
     delete user.password;
+    delete user.isActive;
     return {...user,token:this.getJwtToken({id: user.id})};
   }
 
