@@ -9,6 +9,7 @@ import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
 export class AuthService {
+  
   logger = new Logger();
 
   constructor(
@@ -45,7 +46,7 @@ export class AuthService {
     const user = await this.userRepository.findOne(
       {
         where:{email},
-        select:{id:true,password:true,isActive:true}
+        select:{id:true,password:true,isActive:true,email:true,fullName:true}
 
       }
     );
@@ -63,6 +64,15 @@ export class AuthService {
     delete user.password;
     delete user.isActive;
     return {...user,token:this.getJwtToken({id: user.id})};
+  }
+
+  checkAuthStatus(user: User) {
+    delete user.password;
+    delete user.isActive;
+   return{
+    ...user,
+    token:this.getJwtToken({id:user.id})
+   }
   }
 
 
