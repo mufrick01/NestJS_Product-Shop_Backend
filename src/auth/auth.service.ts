@@ -46,7 +46,7 @@ export class AuthService {
     const user = await this.userRepository.findOne(
       {
         where:{email},
-        select:{id:true,password:true,isActive:true,email:true,fullName:true}
+        select:{id:true,password:true,isActive:true,email:true,fullName:true,roles:true}
 
       }
     );
@@ -62,7 +62,6 @@ export class AuthService {
     }
 
     delete user.password;
-    delete user.isActive;
     return {...user,token:this.getJwtToken({id: user.id})};
   }
 
