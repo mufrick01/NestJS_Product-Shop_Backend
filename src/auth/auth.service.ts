@@ -69,7 +69,7 @@ export class AuthService {
     delete user.password;
     delete user.isActive;
    return{
-    ...user,
+    user : {...user},
     token:this.getJwtToken({id:user.id})
    }
   }
